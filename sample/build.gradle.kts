@@ -12,6 +12,10 @@ android {
         targetCompatibility = JavaVersion.VERSION_1_8
     }
 
+    buildFeatures {
+        viewBinding = true
+    }
+
     defaultConfig {
         applicationId = "com.chicco.sample"
         minSdkVersion(23)

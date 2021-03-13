@@ -1,7 +1,7 @@
 object Versions {
     const val kotlinVersion = "1.4.0"
     const val androidPluginVersion = "4.0.1"
-    const val androidxCoreVersion = "1.3.2"
+    const val androidxCoreVersion = "1.5.0-beta03"
     const val appCompatVersion = "1.2.0"
 
     const val junitVersion = "4.12"

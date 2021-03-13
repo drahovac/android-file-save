@@ -1,16 +1,28 @@
 package com.chicco.sample
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
+import com.chicco.sample.databinding.ActivityMainBinding
 import com.chicco.sample.ui.MainViewModel
+import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
 
-    val model: MainViewModel by viewModels()
+    private val model: MainViewModel by viewModels()
+    private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
+        progressBar.show()
+        downloadPdf.setOnClickListener { model.downloadPdf() }
+
+        model.downloadPdfJob.observe(this) { jobPending ->
+            downloadPdf.isEnabled = !jobPending
+            if (jobPending) progressBar.show() else progressBar.hide()
+        }
     }
 }
