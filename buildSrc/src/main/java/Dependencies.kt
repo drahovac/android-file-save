@@ -1,12 +1,13 @@
-object Versions{
+object Versions {
     const val kotlinVersion = "1.4.0"
     const val androidPluginVersion = "4.0.1"
-    const val androidxCoreVersion = "1.3.2"
+    const val androidxCoreVersion = "1.5.0-beta03"
     const val appCompatVersion = "1.2.0"
 
     const val junitVersion = "4.12"
     const val androidxTestVersion = "1.1.2"
     const val espressoVersion = "3.3.0"
+    const val activity_version = "1.2.1"
 }
 
 object KotlinDependencies {
@@ -18,6 +19,7 @@ object AndroidDependencies {
     const val plugin = "com.android.tools.build:gradle:${Versions.androidPluginVersion}"
     const val androidxCore = "androidx.core:core-ktx:${Versions.androidxCoreVersion}"
     const val appCompat = "androidx.appcompat:appcompat:${Versions.appCompatVersion}"
+    const val activity = "androidx.activity:activity-ktx:${Versions.activity_version}"
 }
 
 object TestDependencies {
