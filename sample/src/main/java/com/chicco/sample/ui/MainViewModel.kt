@@ -16,5 +16,5 @@ class MainViewModel : ViewModel() {
         }
     }
 
-    fun <T> LiveData<T>.asMutable() = this as MutableLiveData<T>
+    private fun <T> LiveData<T>.asMutable() = this as MutableLiveData<T>
 }
