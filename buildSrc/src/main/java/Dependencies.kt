@@ -2,6 +2,7 @@ object Versions {
     const val compileSdkVersion="30"
     const val minSdkVersion="23"
     const val kotlinVersion = "1.4.0"
+    const val detektVersion = "1.16.0"
     const val androidPluginVersion = "4.0.1"
     const val androidxCoreVersion = "1.5.0-beta03"
     const val appCompatVersion = "1.2.0"
@@ -15,6 +16,7 @@ object Versions {
 object KotlinDependencies {
     const val kotlinPlugin = "org.jetbrains.kotlin:kotlin-gradle-plugin:${Versions.kotlinVersion}"
     const val kotlin = "org.jetbrains.kotlin:kotlin-stdlib:${Versions.kotlinVersion}"
+    const val detekt = "io.gitlab.arturbosch.detekt:detekt-gradle-plugin:${Versions.detektVersion}"
 }
 
 object AndroidDependencies {
