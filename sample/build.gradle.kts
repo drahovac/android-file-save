@@ -5,7 +5,7 @@ plugins {
 }
 
 android {
-    compileSdkVersion(30)
+    compileSdkVersion(Versions.compileSdkVersion)
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
@@ -18,8 +18,8 @@ android {
 
     defaultConfig {
         applicationId = "com.chicco.sample"
-        minSdkVersion(23)
-        targetSdkVersion(30)
+        minSdkVersion(Versions.minSdkVersion)
+        targetSdkVersion(Versions.compileSdkVersion)
         versionCode = 1
         versionName = "1.0"
 

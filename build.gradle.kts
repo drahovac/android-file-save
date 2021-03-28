@@ -21,9 +21,3 @@ allprojects {
     }
     apply(from = "$rootDir/detekt.gradle")
 }
-
-tasks {
-    val clean by registering(Delete::class) {
-        delete(buildDir)
-    }
-}
