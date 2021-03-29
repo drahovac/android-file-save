@@ -7,6 +7,7 @@ buildscript {
     dependencies {
         classpath(AndroidDependencies.plugin)
         classpath(KotlinDependencies.kotlinPlugin)
+        classpath(KotlinDependencies.detekt)
 
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle.kts files
@@ -18,10 +19,5 @@ allprojects {
         google()
         jcenter()
     }
-}
-
-tasks {
-    val clean by registering(Delete::class) {
-        delete(buildDir)
-    }
+    apply(from = "$rootDir/detekt.gradle")
 }
