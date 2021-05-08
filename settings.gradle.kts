@@ -1,3 +1,3 @@
-include(":file-save")
+include(":filesave")
 include(":sample")
 rootProject.name = "FileSave"

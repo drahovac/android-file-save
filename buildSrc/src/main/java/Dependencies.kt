@@ -11,6 +11,7 @@ object Versions {
     const val androidxTestVersion = "1.1.2"
     const val espressoVersion = "3.3.0"
     const val activity_version = "1.2.1"
+    const val koin_version= "3.0.1"
 }
 
 object KotlinDependencies {
@@ -24,6 +25,7 @@ object AndroidDependencies {
     const val androidxCore = "androidx.core:core-ktx:${Versions.androidxCoreVersion}"
     const val appCompat = "androidx.appcompat:appcompat:${Versions.appCompatVersion}"
     const val activity = "androidx.activity:activity-ktx:${Versions.activity_version}"
+    const val koin =  "io.insert-koin:koin-android:${Versions.koin_version}"
 }
 
 object TestDependencies {

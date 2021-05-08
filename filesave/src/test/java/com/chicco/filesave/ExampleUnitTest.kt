@@ -1,4 +1,4 @@
-package com.chicco.file_save
+package com.chicco.filesave
 
 import org.junit.Test
 
