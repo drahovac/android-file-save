@@ -37,7 +37,6 @@ dependencies {
     implementation(KotlinDependencies.kotlin)
     implementation(AndroidDependencies.androidxCore)
     implementation(AndroidDependencies.appCompat)
-    implementation(AndroidDependencies.koin)
 
     testImplementation(TestDependencies.junit)
     androidTestImplementation(TestDependencies.androidxTest)
