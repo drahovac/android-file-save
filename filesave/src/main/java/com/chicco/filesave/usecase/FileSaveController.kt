@@ -1,8 +1,16 @@
 package com.chicco.filesave.usecase
 
+import android.content.Context
+import com.chicco.filesave.dataaccess.FileSaveProcessor
 import java.io.InputStream
 
-interface FileSaveController {
+class FileSaveController(
+    context: Context
+) {
 
-    fun savePdfFile(inputStream: InputStream, fileName: String)
+    private val processor = FileSaveProcessor(context.contentResolver)
+
+    fun savePdfFile(inputStream: InputStream, fileName: String) {
+        processor.saveToDownloadsFolder(inputStream, fileName)
+    }
 }
