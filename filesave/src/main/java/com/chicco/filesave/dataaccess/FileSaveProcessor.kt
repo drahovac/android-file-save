@@ -6,6 +6,7 @@ import android.net.Uri
 import android.os.Build
 import android.os.ParcelFileDescriptor
 import android.provider.MediaStore
+import com.chicco.filesave.utils.suffix
 import java.io.InputStream
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
@@ -14,10 +15,13 @@ internal class FileSaveProcessor(
     private val contentResolver: ContentResolver
 ) {
 
-    suspend fun saveToDownloadsFolder(stream: InputStream, fileName: String): Boolean {
+    suspend fun saveToDownloadsFolder(stream: InputStream, fileNameWithSuffix: String): Boolean {
+        check(fileNameWithSuffix.suffix() != null) {
+            "File name: $fileNameWithSuffix must contain suffix."
+        }
         return suspendCoroutine { continuation ->
             val result = kotlin.runCatching {
-                saveFile(fileName, stream)
+                saveFile(fileNameWithSuffix, stream)
             }.isSuccess
             continuation.resume(result)
         }
@@ -47,3 +51,4 @@ internal class FileSaveProcessor(
         }
     }
 }
+

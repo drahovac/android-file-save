@@ -26,10 +26,12 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
             GlobalScope.launch {
                 downloadPdfJob.asMutable().postValue(true)
                 withContext(Dispatchers.IO) {
-                    val inputStream: InputStream =
-                        getApplication<Application>().assets.open(SAMPLE_PDF_NAME)
+                    runCatching {
+                        val inputStream: InputStream =
+                            getApplication<Application>().assets.open(SAMPLE_PDF_NAME)
 
-                    saveController.savePdfFile(inputStream, SAMPLE_PDF_NAME)
+                        saveController.savePdfFile(inputStream, SAMPLE_PDF_NAME)
+                    }
                 }
                 downloadPdfJob.asMutable().postValue(false)
             }
