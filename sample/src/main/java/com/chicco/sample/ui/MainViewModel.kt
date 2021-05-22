@@ -5,6 +5,10 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.chicco.filesave.usecase.FileSaveController
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.io.InputStream
 
 
@@ -19,13 +23,16 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
 
     fun downloadPdf() {
         if (downloadPdfJob.value == false) {
-            downloadPdfJob.asMutable().postValue(true)
-            val inputStream: InputStream =
-                getApplication<Application>().assets.open(SAMPLE_PDF_NAME)
+            GlobalScope.launch {
+                downloadPdfJob.asMutable().postValue(true)
+                withContext(Dispatchers.IO) {
+                    val inputStream: InputStream =
+                        getApplication<Application>().assets.open(SAMPLE_PDF_NAME)
 
-            saveController.savePdfFile(inputStream, SAMPLE_PDF_NAME)
-            downloadPdfJob.asMutable().postValue(false)
-            // some actual job
+                    saveController.savePdfFile(inputStream, SAMPLE_PDF_NAME)
+                }
+                downloadPdfJob.asMutable().postValue(false)
+            }
         }
     }
 

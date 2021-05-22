@@ -10,7 +10,7 @@ class FileSaveController(
 
     private val processor = FileSaveProcessor(context.contentResolver)
 
-    fun savePdfFile(inputStream: InputStream, fileName: String) {
+    suspend fun savePdfFile(inputStream: InputStream, fileName: String) {
         processor.saveToDownloadsFolder(inputStream, fileName)
     }
 }

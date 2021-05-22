@@ -6,24 +6,36 @@ import android.net.Uri
 import android.os.Build
 import android.os.ParcelFileDescriptor
 import android.provider.MediaStore
-import java.io.*
+import java.io.InputStream
+import kotlin.coroutines.resume
+import kotlin.coroutines.suspendCoroutine
 
 internal class FileSaveProcessor(
     private val contentResolver: ContentResolver
 ) {
 
-    fun saveToDownloadsFolder(stream: InputStream, fileName: String) {
+    suspend fun saveToDownloadsFolder(stream: InputStream, fileName: String): Boolean {
+        return suspendCoroutine { continuation ->
+            val result = kotlin.runCatching {
+                saveFile(fileName, stream)
+            }.isSuccess
+            continuation.resume(result)
+        }
+    }
+
+    private fun saveFile(fileName: String, stream: InputStream) {
         val downloadsFolder = getDownloadFolderUri()
         val contentDetails = ContentValues().apply {
             put(MediaStore.Downloads.DISPLAY_NAME, fileName)
         }
 
         contentResolver.insert(downloadsFolder, contentDetails)?.let { contentUri ->
-            contentResolver.openFileDescriptor(contentUri, "w").use { parcelFileDescriptor ->
-                ParcelFileDescriptor.AutoCloseOutputStream(parcelFileDescriptor).write(
-                    stream.buffered().readBytes()
-                )
-            }
+            contentResolver.openFileDescriptor(contentUri, "w")
+                .use { parcelFileDescriptor ->
+                    ParcelFileDescriptor.AutoCloseOutputStream(parcelFileDescriptor).write(
+                        stream.buffered().readBytes()
+                    )
+                }
         }
     }
 
