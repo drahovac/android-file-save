@@ -42,7 +42,7 @@ android {
 
 dependencies {
     implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar"))))
-    implementation(project(":file-save"))
+    implementation(project(":filesave"))
     implementation(KotlinDependencies.kotlin)
     implementation(AndroidDependencies.androidxCore)
     implementation(AndroidDependencies.appCompat)

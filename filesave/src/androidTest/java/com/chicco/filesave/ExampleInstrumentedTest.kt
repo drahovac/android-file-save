@@ -1,4 +1,4 @@
-package com.chicco.file_save
+package com.chicco.filesave
 
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4
