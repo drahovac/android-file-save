@@ -20,7 +20,8 @@ class DownloadsSaveLegacyProcessor : FileSaveProcessor() {
         stream: InputStream,
         attachmentPath: File
     ): File {
-        val savedFile = File(attachmentPath, fileName)
+        val uniqueFileName = FileNameLegacyResolver.getUniqueFileName(attachmentPath, fileName)
+        val savedFile = File(attachmentPath, uniqueFileName)
         try {
             savedFile.parentFile?.mkdirs()
             FileOutputStream(savedFile).use { outputStream ->
