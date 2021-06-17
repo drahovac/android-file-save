@@ -4,6 +4,7 @@ import android.content.ContentResolver
 import android.content.ContentValues
 import android.net.Uri
 import android.os.Build
+import android.os.Environment
 import android.provider.MediaStore
 import androidx.annotation.RequiresApi
 import com.chicco.filesave.domain.FileContent
@@ -33,7 +34,7 @@ class ImageFileSaveProcessor(
                 subfolderName?.let {
                     put(
                         MediaStore.Images.Media.RELATIVE_PATH,
-                        PICTURES_FOLDER_NAME + subfolderName
+                        "${Environment.DIRECTORY_PICTURES}/$it"
                     )
                 }
 
@@ -43,9 +44,5 @@ class ImageFileSaveProcessor(
 
             contentResolver.saveFile(downloadsFolder, contentDetails, data)
         }
-    }
-
-    private companion object {
-        private const val PICTURES_FOLDER_NAME = "Pictures/"
     }
 }

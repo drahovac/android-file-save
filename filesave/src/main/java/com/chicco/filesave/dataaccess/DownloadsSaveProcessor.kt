@@ -24,7 +24,7 @@ internal class DownloadsSaveProcessor(
                 subfolderName?.let {
                     put(
                         MediaStore.Downloads.RELATIVE_PATH,
-                        Environment.DIRECTORY_DOWNLOADS + "/$it"
+                        "${Environment.DIRECTORY_DOWNLOADS}/$it"
                     )
                 }
             }
@@ -35,9 +35,5 @@ internal class DownloadsSaveProcessor(
 
     private fun getDownloadFolderUri(): Uri {
         return MediaStore.Downloads.getContentUri(MediaStore.VOLUME_EXTERNAL_PRIMARY)
-    }
-
-    private companion object {
-        private const val DOWNLOADS_FOLDER_NAME = "Downloads/"
     }
 }

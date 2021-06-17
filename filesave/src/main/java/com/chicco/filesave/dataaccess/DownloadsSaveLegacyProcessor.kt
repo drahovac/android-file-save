@@ -11,11 +11,12 @@ import java.io.InputStream
 class DownloadsSaveLegacyProcessor : FileSaveProcessor() {
 
     override fun saveFile(file: FileContent) {
-        val downloadsPath =
-            getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
-        val fileName = file.fileNameWithoutSuffix + file.suffix.orEmpty()
+        val directory =
+            getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() +
+                    file.subfolderName?.let { "/$it" }.orEmpty()
+        val fileName = file.fileNameWithSuffix
 
-        getFile(fileName, file.data, downloadsPath)
+        getFile(fileName, file.data, File(directory))
     }
 
     private fun getFile(
@@ -27,6 +28,7 @@ class DownloadsSaveLegacyProcessor : FileSaveProcessor() {
         val savedFile = File(attachmentPath, uniqueFileName)
         try {
             savedFile.parentFile?.mkdirs()
+
             FileOutputStream(savedFile).use { outputStream ->
                 val readBytes = stream.buffered().readBytes()
                 outputStream.write(readBytes)
