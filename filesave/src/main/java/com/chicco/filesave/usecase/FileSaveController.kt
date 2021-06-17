@@ -5,7 +5,8 @@ import android.os.Build
 import com.chicco.filesave.dataaccess.DownloadsSaveLegacyProcessor
 import com.chicco.filesave.dataaccess.DownloadsSaveProcessor
 import com.chicco.filesave.dataaccess.FileSaveProcessor
-import java.io.InputStream
+import com.chicco.filesave.dataaccess.ImageFileSaveProcessor
+import com.chicco.filesave.domain.FileContent
 
 class FileSaveController(
     context: Context
@@ -16,8 +17,14 @@ class FileSaveController(
         } else {
             DownloadsSaveLegacyProcessor()
         }
+    private val imagesFileSaveProcessor: ImageFileSaveProcessor =
+        ImageFileSaveProcessor(context.contentResolver)
 
-    suspend fun savePdfFile(inputStream: InputStream, fileNameWithSuffix: String) {
-        downloadsProcessor.save(inputStream, fileNameWithSuffix)
+    suspend fun savePdfFile(content: FileContent) {
+        downloadsProcessor.save(content)
+    }
+
+    suspend fun saveImageFile(content: FileContent) {
+        imagesFileSaveProcessor.save(content)
     }
 }

@@ -4,45 +4,40 @@ import android.content.ContentResolver
 import android.content.ContentValues
 import android.net.Uri
 import android.os.Build
-import android.os.ParcelFileDescriptor
+import android.os.Environment
 import android.provider.MediaStore
 import androidx.annotation.RequiresApi
-import java.io.InputStream
+import com.chicco.filesave.domain.FileContent
 
 @RequiresApi(Build.VERSION_CODES.Q)
 internal class DownloadsSaveProcessor(
     private val contentResolver: ContentResolver
 ) : FileSaveProcessor() {
 
-    private val fileNameResolver: FileNameResolver by lazy {
-        FileNameResolver(
-            getDownloadFolderUri(),
-            MediaStore.Downloads.DISPLAY_NAME,
-            contentResolver
-        )
-    }
-
-
-    override fun saveFile(fileName: String, stream: InputStream) {
+    override fun saveFile(file: FileContent) {
         val downloadsFolder = getDownloadFolderUri()
-        val resolvedFileName = fileNameResolver.getFilenameWithNumber(fileName)
 
-        val contentDetails = ContentValues().apply {
-            put(MediaStore.Downloads.DISPLAY_NAME, resolvedFileName)
-        }
-
-        contentResolver.insert(downloadsFolder, contentDetails)?.let { contentUri ->
-            contentResolver.openFileDescriptor(contentUri, "w")
-                .use { parcelFileDescriptor ->
-                    ParcelFileDescriptor.AutoCloseOutputStream(parcelFileDescriptor).write(
-                        stream.buffered().readBytes()
+        with(file) {
+            val contentDetails = ContentValues().apply {
+                put(MediaStore.Downloads.DISPLAY_NAME, fileNameWithSuffix)
+                mimeType?.let { put(MediaStore.Downloads.MIME_TYPE, it) }
+                subfolderName?.let {
+                    put(
+                        MediaStore.Downloads.RELATIVE_PATH,
+                        Environment.DIRECTORY_DOWNLOADS + "/$it"
                     )
                 }
+            }
+
+            contentResolver.saveFile(downloadsFolder, contentDetails, data)
         }
     }
 
     private fun getDownloadFolderUri(): Uri {
         return MediaStore.Downloads.getContentUri(MediaStore.VOLUME_EXTERNAL_PRIMARY)
     }
-}
 
+    private companion object {
+        private const val DOWNLOADS_FOLDER_NAME = "Downloads/"
+    }
+}

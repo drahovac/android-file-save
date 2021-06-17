@@ -2,6 +2,7 @@ package com.chicco.filesave.dataaccess
 
 import android.os.Environment
 import android.os.Environment.getExternalStoragePublicDirectory
+import com.chicco.filesave.domain.FileContent
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
@@ -9,10 +10,12 @@ import java.io.InputStream
 
 class DownloadsSaveLegacyProcessor : FileSaveProcessor() {
 
-    override fun saveFile(fileName: String, stream: InputStream) {
+    override fun saveFile(file: FileContent) {
         val downloadsPath =
             getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
-        getFile(fileName, stream, downloadsPath)
+        val fileName = file.fileNameWithoutSuffix + file.suffix.orEmpty()
+
+        getFile(fileName, file.data, downloadsPath)
     }
 
     private fun getFile(
