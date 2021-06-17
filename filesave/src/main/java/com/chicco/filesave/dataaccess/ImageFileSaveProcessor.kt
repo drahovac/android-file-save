@@ -9,6 +9,7 @@ import android.provider.MediaStore
 import androidx.annotation.RequiresApi
 import com.chicco.filesave.domain.FileContent
 
+@RequiresApi(Build.VERSION_CODES.Q)
 class ImageFileSaveProcessor(
     private val contentResolver: ContentResolver
 ) : FileSaveProcessor() {
@@ -22,7 +23,6 @@ class ImageFileSaveProcessor(
 
     }
 
-    @RequiresApi(Build.VERSION_CODES.Q)
     override fun saveFile(file: FileContent) {
         val downloadsFolder = getImagesFolderUri()
 

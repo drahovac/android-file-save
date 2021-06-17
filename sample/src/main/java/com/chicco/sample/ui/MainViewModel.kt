@@ -66,7 +66,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
                 FileContent(
                     data = inputStream,
                     fileNameWithoutSuffix = SAMPLE_FILE_NAME,
-                    suffix = null,
+                    suffix = "png",
                     mimeType = "image/png",
                     subfolderName = "test_subfolder"
                 )
