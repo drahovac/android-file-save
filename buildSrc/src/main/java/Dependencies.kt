@@ -8,6 +8,8 @@ object Versions {
     const val appCompatVersion = "1.2.0"
 
     const val junitVersion = "4.12"
+    const val mockitoVersion = "3.1.0"
+    const val mockitoKotlinVersion = "1.5.0"
     const val androidxTestVersion = "1.1.2"
     const val espressoVersion = "3.3.0"
     const val activityVersion = "1.2.1"
@@ -31,6 +33,8 @@ object AndroidDependencies {
 
 object TestDependencies {
     const val junit = "junit:junit:${Versions.junitVersion}"
+    const val mockito = "org.mockito:mockito-core:${Versions.mockitoVersion}"
+    const val mockitoKotlin = "com.nhaarman:mockito-kotlin-kt1.1:${Versions.mockitoKotlinVersion}"
     const val androidxTest = "androidx.test.ext:junit:${Versions.androidxTestVersion}"
     const val espresso = "androidx.test.espresso:espresso-core:${Versions.espressoVersion}"
 }

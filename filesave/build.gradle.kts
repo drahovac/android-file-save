@@ -40,6 +40,8 @@ dependencies {
     implementation(AndroidDependencies.appCompat)
 
     testImplementation(TestDependencies.junit)
+    testImplementation(TestDependencies.mockito)
+    testImplementation(TestDependencies.mockitoKotlin)
     androidTestImplementation(TestDependencies.androidxTest)
     androidTestImplementation(TestDependencies.espresso)
 }
