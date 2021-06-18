@@ -1,7 +1,7 @@
 object Versions {
     const val compileSdkVersion = 30
     const val minSdkVersion = "23"
-    const val kotlinVersion = "1.4.0"
+    const val kotlinVersion = "1.5.10"
     const val detektVersion = "1.16.0"
     const val androidPluginVersion = "4.0.1"
     const val androidxCoreVersion = "1.5.0-beta03"

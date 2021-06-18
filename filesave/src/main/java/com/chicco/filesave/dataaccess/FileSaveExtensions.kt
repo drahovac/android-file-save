@@ -4,6 +4,7 @@ import android.content.ContentResolver
 import android.content.ContentValues
 import android.net.Uri
 import android.os.ParcelFileDescriptor
+import com.chicco.filesave.domain.FileSaveResult
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
@@ -45,5 +46,12 @@ fun InputStream.saveToFile(
             throw e
         }
         return savedFile
+    }
+}
+
+fun Result<Unit>.toFileSaveResult(): FileSaveResult {
+    return when {
+        isSuccess -> FileSaveResult.SaveSuccess
+        else -> FileSaveResult.SaveError(exceptionOrNull())
     }
 }
