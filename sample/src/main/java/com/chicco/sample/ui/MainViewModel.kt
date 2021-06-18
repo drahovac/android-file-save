@@ -21,7 +21,8 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         const val SAMPLE_IMAGE_NAME = "Sample.png"
     }
 
-    private val saveController: FileSaveController = FileSaveController(getApplication())
+    private val saveController: FileSaveController =
+        FileSaveController.getInstance(getApplication())
     val downloadPendingJob: LiveData<Boolean> = MutableLiveData(false)
 
     fun downloadPdf() {
@@ -29,7 +30,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
             val inputStream: InputStream =
                 getApplication<Application>().assets.open(SAMPLE_PDF_NAME)
 
-            saveController.savePdfFile(
+            saveController.saveDocumentFile(
                 FileContent(
                     data = inputStream,
                     fileNameWithoutSuffix = SAMPLE_FILE_NAME,
