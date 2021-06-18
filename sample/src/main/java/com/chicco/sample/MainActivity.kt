@@ -17,10 +17,10 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        progressBar.show()
         downloadPdf.setOnClickListener { model.downloadPdf() }
+        downloadImage.setOnClickListener { model.downloadImage() }
 
-        model.downloadPdfJob.observe(this) { jobPending ->
+        model.downloadPendingJob.observe(this) { jobPending ->
             downloadPdf.isEnabled = !jobPending
             if (jobPending) progressBar.show() else progressBar.hide()
         }
