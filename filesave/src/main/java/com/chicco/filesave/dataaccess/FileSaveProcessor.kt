@@ -1,5 +1,6 @@
 package com.chicco.filesave.dataaccess
 
+import android.net.Uri
 import com.chicco.filesave.domain.FileContent
 import com.chicco.filesave.domain.FileSaveResult
 import kotlin.coroutines.resume
@@ -16,5 +17,5 @@ abstract class FileSaveProcessor {
         }
     }
 
-    protected abstract fun saveFile(file: FileContent)
+    protected abstract fun saveFile(file: FileContent): Uri
 }

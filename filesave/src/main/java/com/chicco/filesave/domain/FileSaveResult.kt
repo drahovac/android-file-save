@@ -1,8 +1,10 @@
 package com.chicco.filesave.domain
 
+import android.net.Uri
+
 sealed interface FileSaveResult {
 
-    object SaveSuccess : FileSaveResult
+    data class SaveSuccess(val successData: Uri) : FileSaveResult
 
     object MissingWritePermission : FileSaveResult
 

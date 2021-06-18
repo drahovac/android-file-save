@@ -14,7 +14,7 @@ internal class DownloadsSaveProcessor(
     private val contentResolver: ContentResolver
 ) : FileSaveProcessor() {
 
-    override fun saveFile(file: FileContent) {
+    override fun saveFile(file: FileContent): Uri {
         val downloadsFolder = getDownloadFolderUri()
 
         with(file) {
@@ -29,7 +29,7 @@ internal class DownloadsSaveProcessor(
                 }
             }
 
-            contentResolver.saveFile(downloadsFolder, contentDetails, data)
+            return contentResolver.saveFile(downloadsFolder, contentDetails, data)
         }
     }
 
