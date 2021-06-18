@@ -8,7 +8,7 @@ abstract class FileSaveProcessor {
 
     suspend fun save(file: FileContent): Boolean {
         return suspendCoroutine { continuation ->
-            val result = kotlin.runCatching {
+            val result = runCatching {
                 saveFile(file)
             }.isSuccess
             continuation.resume(result)

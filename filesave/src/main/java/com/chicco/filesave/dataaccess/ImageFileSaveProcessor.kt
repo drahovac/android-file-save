@@ -38,7 +38,7 @@ class ImageFileSaveProcessor(
                     )
                 }
 
-                put(MediaStore.Images.Media.DATE_ADDED, System.currentTimeMillis() / 1000)
+                put(MediaStore.Images.Media.DATE_ADDED, System.currentTimeMillis())
                 put(MediaStore.Images.Media.DATE_TAKEN, System.currentTimeMillis())
             }
 

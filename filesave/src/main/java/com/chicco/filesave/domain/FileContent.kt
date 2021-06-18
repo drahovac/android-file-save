@@ -11,5 +11,5 @@ data class FileContent(
     val subfolderName: String?
 ) {
     val fileNameWithSuffix: String
-        get() = "$fileNameWithoutSuffix$DOT${suffix.orEmpty()}"
+        get() = "$fileNameWithoutSuffix$DOT${suffix}"
 }
