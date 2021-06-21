@@ -1,10 +1,7 @@
 package com.chicco.sample.ui
 
-import android.Manifest.permission.WRITE_EXTERNAL_STORAGE
 import android.annotation.SuppressLint
 import android.app.Application
-import android.content.pm.PackageManager
-import androidx.core.app.ActivityCompat.checkSelfPermission
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -53,7 +50,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         resultData: MutableLiveData<String>,
         saveFileAction: suspend () -> FileSaveResult
     ) {
-        if (downloadPendingJob.value == false && hasWritePermission()) {
+        if (downloadPendingJob.value == false) {
             GlobalScope.launch {
                 downloadPendingJob.asMutable().postValue(true)
                 withContext(Dispatchers.IO) {
@@ -81,12 +78,5 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
                 )
             )
         }
-    }
-
-    private fun hasWritePermission(): Boolean {
-        return checkSelfPermission(
-            getApplication(),
-            WRITE_EXTERNAL_STORAGE
-        ) != PackageManager.PERMISSION_GRANTED
     }
 }

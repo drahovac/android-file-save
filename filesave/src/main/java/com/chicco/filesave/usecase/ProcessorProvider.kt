@@ -4,7 +4,7 @@ import android.content.Context
 import android.os.Build
 import com.chicco.filesave.dataaccess.*
 
-data class ProcessorProvider(private val context: Context) {
+internal data class ProcessorProvider(private val context: Context) {
 
     val downloadsProcessor: FileSaveProcessor =
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {

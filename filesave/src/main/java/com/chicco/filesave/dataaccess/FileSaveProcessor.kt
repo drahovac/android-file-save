@@ -6,7 +6,7 @@ import com.chicco.filesave.domain.FileSaveResult
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 
-abstract class FileSaveProcessor {
+internal abstract class FileSaveProcessor {
 
     suspend fun save(file: FileContent): FileSaveResult {
         return suspendCoroutine { continuation ->

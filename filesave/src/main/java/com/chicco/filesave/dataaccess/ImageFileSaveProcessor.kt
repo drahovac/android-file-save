@@ -10,7 +10,7 @@ import androidx.annotation.RequiresApi
 import com.chicco.filesave.domain.FileContent
 
 @RequiresApi(Build.VERSION_CODES.Q)
-class ImageFileSaveProcessor(
+internal class ImageFileSaveProcessor(
     private val contentResolver: ContentResolver
 ) : FileSaveProcessor() {
 

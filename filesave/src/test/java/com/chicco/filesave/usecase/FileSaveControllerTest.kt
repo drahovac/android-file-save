@@ -1,6 +1,7 @@
 package com.chicco.filesave.usecase
 
 import android.net.Uri
+import com.chicco.filesave.dataaccess.CheckWritePermissionProcessor
 import com.chicco.filesave.dataaccess.FileSaveProcessor
 import com.chicco.filesave.domain.FileContentTestBuilder
 import com.chicco.filesave.domain.FileSaveResult
@@ -19,6 +20,7 @@ class FileSaveControllerTest {
     private val anyProcessorProvider = mock<ProcessorProvider>()
     private val anyFileDownloadProcessor = mock<FileSaveProcessor>()
     private val anyFileImagesProcessor = mock<FileSaveProcessor>()
+    private val anyCheckWritePermissionProcessor = mock<CheckWritePermissionProcessor>()
 
     private lateinit var fileSaveController: FileSaveController
 
@@ -26,8 +28,10 @@ class FileSaveControllerTest {
     fun setUp() {
         whenever(anyProcessorProvider.downloadsProcessor).thenReturn(anyFileDownloadProcessor)
         whenever(anyProcessorProvider.imagesFileSaveProcessor).thenReturn(anyFileImagesProcessor)
+        whenever(anyCheckWritePermissionProcessor.hasWritePermission()).thenReturn(true)
 
-        fileSaveController = FileSaveController(anyProcessorProvider)
+        fileSaveController =
+            FileSaveController(anyProcessorProvider, anyCheckWritePermissionProcessor)
     }
 
     @Test
@@ -65,5 +69,18 @@ class FileSaveControllerTest {
             verify(anyFileImagesProcessor).save(anyFileContent)
             verify(anyFileDownloadProcessor, never()).save(any())
         }
+    }
+
+    @Test
+    fun `should return missing permission result`() {
+        whenever(anyCheckWritePermissionProcessor.hasWritePermission()).thenReturn(false)
+        runBlocking {
+            val anyFileContent = FileContentTestBuilder().build()
+
+            val result = fileSaveController.saveImageFile(anyFileContent)
+
+            assertEquals(FileSaveResult.MissingWritePermission, result)
+        }
+
     }
 }

@@ -7,7 +7,7 @@ import androidx.core.net.toUri
 import com.chicco.filesave.domain.FileContent
 import java.io.File
 
-class DownloadsSaveLegacyProcessor : FileSaveProcessor() {
+internal class DownloadsSaveLegacyProcessor : FileSaveProcessor() {
 
     override fun saveFile(file: FileContent): Uri {
         val directory =
