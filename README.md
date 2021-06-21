@@ -1,2 +1,2 @@
 # android-file-save
-Library for saving files to download folder.
+Android library for saving files to downloads and images folders.
