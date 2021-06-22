@@ -7,12 +7,13 @@ import android.os.Build
 import android.os.Environment
 import android.provider.MediaStore
 import androidx.annotation.RequiresApi
+import com.chicco.filesave.domain.BitmapContent
 import com.chicco.filesave.domain.FileContent
 
 @RequiresApi(Build.VERSION_CODES.Q)
 internal class ImageFileSaveProcessor(
     private val contentResolver: ContentResolver
-) : FileSaveProcessor() {
+) : FileSaveProcessor, BitmapSaveProcessor {
 
     private fun getImagesFolderUri(): Uri {
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
@@ -44,5 +45,9 @@ internal class ImageFileSaveProcessor(
 
             return contentResolver.saveFile(downloadsFolder, contentDetails, data)
         }
+    }
+
+    override fun saveBitmap(file: BitmapContent): Uri {
+        TODO("Not yet implemented")
     }
 }

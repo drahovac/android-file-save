@@ -18,4 +18,10 @@ internal data class ProcessorProvider(private val context: Context) {
         } else {
             ImageFileSaveLegacyProcessor()
         }
+    val bitmapSaveProcessor: BitmapSaveProcessor =
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            ImageFileSaveProcessor(context.contentResolver)
+        } else {
+            ImageFileSaveLegacyProcessor()
+        }
 }

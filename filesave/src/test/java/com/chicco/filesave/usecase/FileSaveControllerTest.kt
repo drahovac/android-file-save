@@ -1,8 +1,10 @@
 package com.chicco.filesave.usecase
 
 import android.net.Uri
+import com.chicco.filesave.dataaccess.BitmapSaveProcessor
 import com.chicco.filesave.dataaccess.CheckWritePermissionProcessor
 import com.chicco.filesave.dataaccess.FileSaveProcessor
+import com.chicco.filesave.domain.BitmapContentTestBuilder
 import com.chicco.filesave.domain.FileContentTestBuilder
 import com.chicco.filesave.domain.FileSaveResult
 import com.nhaarman.mockito_kotlin.*
@@ -20,6 +22,7 @@ class FileSaveControllerTest {
     private val anyProcessorProvider = mock<ProcessorProvider>()
     private val anyFileDownloadProcessor = mock<FileSaveProcessor>()
     private val anyFileImagesProcessor = mock<FileSaveProcessor>()
+    private val anyBitmapProcessor = mock<BitmapSaveProcessor>()
     private val anyCheckWritePermissionProcessor = mock<CheckWritePermissionProcessor>()
 
     private lateinit var fileSaveController: FileSaveController
@@ -28,6 +31,7 @@ class FileSaveControllerTest {
     fun setUp() {
         whenever(anyProcessorProvider.downloadsProcessor).thenReturn(anyFileDownloadProcessor)
         whenever(anyProcessorProvider.imagesFileSaveProcessor).thenReturn(anyFileImagesProcessor)
+        whenever(anyProcessorProvider.bitmapSaveProcessor).thenReturn(anyBitmapProcessor)
         whenever(anyCheckWritePermissionProcessor.hasWritePermission()).thenReturn(true)
 
         fileSaveController =
@@ -81,6 +85,18 @@ class FileSaveControllerTest {
 
             assertEquals(FileSaveResult.MissingWritePermission, result)
         }
+    }
 
+    @Test
+    fun `should request save bitmap`() {
+        runBlocking {
+            val anyBitmapContent = BitmapContentTestBuilder().build()
+
+            fileSaveController.saveBitmap(anyBitmapContent)
+
+            verify(anyBitmapProcessor).save(anyBitmapContent)
+            verify(anyFileDownloadProcessor, never()).save(any())
+            verify(anyFileImagesProcessor, never()).save(any())
+        }
     }
 }

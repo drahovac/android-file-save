@@ -21,14 +21,14 @@
         android:layout_height="wrap_content">
 
         <Button
-            android:id="@+id/downloadPdf"
+            android:id="@+id/savePdf"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/content_margin"
-            android:text="@string/download_pdf" />
+            android:text="@string/save_pdf" />
 
         <TextView
-            android:id="@+id/downloadPdfResult"
+            android:id="@+id/savePdfResult"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/content_margin"
@@ -41,14 +41,34 @@
         android:layout_height="wrap_content">
 
         <Button
-            android:id="@+id/downloadImage"
+            android:id="@+id/saveImage"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/content_margin"
-            android:text="@string/download_image" />
+            android:text="@string/save_image" />
 
         <TextView
-            android:id="@+id/downloadImageResult"
+            android:id="@+id/saveImageResult"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/content_margin"
+            android:gravity="end" />
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <Button
+            android:id="@+id/saveBitmap"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/content_margin"
+            android:text="@string/save_bitmap" />
+
+        <TextView
+            android:id="@+id/saveBitmapResult"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/content_margin"

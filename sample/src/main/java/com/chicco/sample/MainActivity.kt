@@ -17,18 +17,22 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        downloadPdf.setOnClickListener { model.downloadPdf() }
-        downloadImage.setOnClickListener { model.downloadImage() }
+        savePdf.setOnClickListener { model.savePdf() }
+        saveImage.setOnClickListener { model.saveImage() }
+        saveBitmap.setOnClickListener { model.saveBitmap() }
 
         model.downloadPendingJob.observe(this) { jobPending ->
-            downloadPdf.isEnabled = !jobPending
+            savePdf.isEnabled = !jobPending
             if (jobPending) progressBar.show() else progressBar.hide()
         }
-        model.pdfDownloadResult.observe(this) {
-            downloadPdfResult.text = it
+        model.pdfSaveResult.observe(this) {
+            savePdfResult.text = it
         }
-        model.imageDownloadResult.observe(this) {
-            downloadImageResult.text = it
+        model.imageSaveResult.observe(this) {
+            saveImageResult.text = it
+        }
+        model.bitmapSaveResult.observe(this) {
+            saveBitmapResult.text = it
         }
     }
 }
