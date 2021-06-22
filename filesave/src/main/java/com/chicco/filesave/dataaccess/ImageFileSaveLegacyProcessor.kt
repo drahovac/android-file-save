@@ -8,7 +8,7 @@ import com.chicco.filesave.domain.BitmapContent
 import com.chicco.filesave.domain.FileContent
 import java.io.File
 
-internal class ImageFileSaveLegacyProcessor : FileSaveProcessor,BitmapSaveProcessor {
+internal class ImageFileSaveLegacyProcessor : FileSaveProcessor, BitmapSaveProcessor {
 
     override fun saveFile(file: FileContent): Uri {
         val directory = File(
@@ -18,7 +18,15 @@ internal class ImageFileSaveLegacyProcessor : FileSaveProcessor,BitmapSaveProces
         return file.data.saveToFile(file.fileNameWithSuffix, directory).toUri()
     }
 
-    override fun saveBitmap(file: BitmapContent): Uri {
-        TODO("Not yet implemented")
+    override fun saveBitmap(content: BitmapContent): Uri {
+        val directory = File(
+            Environment.getExternalStoragePublicDirectory(DIRECTORY_PICTURES)
+                .toString() + content.subfolderName?.let { "/$it" }.orEmpty()
+        )
+        with(content) {
+            return saveToFile(fileNameWithSuffix, directory) {
+                bitmap.compress(format, quality, it)
+            }.toUri()
+        }
     }
 }
