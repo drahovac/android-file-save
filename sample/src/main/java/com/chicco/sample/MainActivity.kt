@@ -24,5 +24,11 @@ class MainActivity : AppCompatActivity() {
             downloadPdf.isEnabled = !jobPending
             if (jobPending) progressBar.show() else progressBar.hide()
         }
+        model.pdfDownloadResult.observe(this) {
+            downloadPdfResult.text = it
+        }
+        model.imageDownloadResult.observe(this) {
+            downloadImageResult.text = it
+        }
     }
 }

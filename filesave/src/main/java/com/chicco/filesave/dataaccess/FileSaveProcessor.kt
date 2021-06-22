@@ -1,19 +1,21 @@
 package com.chicco.filesave.dataaccess
 
+import android.net.Uri
 import com.chicco.filesave.domain.FileContent
+import com.chicco.filesave.domain.FileSaveResult
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 
-abstract class FileSaveProcessor {
+internal abstract class FileSaveProcessor {
 
-    suspend fun save(file: FileContent): Boolean {
+    suspend fun save(file: FileContent): FileSaveResult {
         return suspendCoroutine { continuation ->
             val result = runCatching {
                 saveFile(file)
-            }.isSuccess
-            continuation.resume(result)
+            }
+            continuation.resume(result.toFileSaveResult())
         }
     }
 
-    protected abstract fun saveFile(file: FileContent)
+    protected abstract fun saveFile(file: FileContent): Uri
 }

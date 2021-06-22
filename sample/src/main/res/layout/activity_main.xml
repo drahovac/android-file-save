@@ -16,19 +16,44 @@
         android:layout_gravity="center_horizontal"
         android:visibility="visible" />
 
-    <Button
-        android:id="@+id/downloadPdf"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/content_margin"
-        android:text="@string/download_pdf" />
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
+        <Button
+            android:id="@+id/downloadPdf"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/content_margin"
+            android:text="@string/download_pdf" />
 
-    <Button
-        android:id="@+id/downloadImage"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/content_margin"
-        android:text="@string/download_image" />
+        <TextView
+            android:id="@+id/downloadPdfResult"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/content_margin"
+            android:gravity="end" />
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <Button
+            android:id="@+id/downloadImage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/content_margin"
+            android:text="@string/download_image" />
+
+        <TextView
+            android:id="@+id/downloadImageResult"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/content_margin"
+            android:gravity="end" />
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
 
 </LinearLayout>

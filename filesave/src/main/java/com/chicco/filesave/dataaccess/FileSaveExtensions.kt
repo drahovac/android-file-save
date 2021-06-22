@@ -4,6 +4,8 @@ import android.content.ContentResolver
 import android.content.ContentValues
 import android.net.Uri
 import android.os.ParcelFileDescriptor
+import com.chicco.filesave.domain.FileSaveResult
+import com.chicco.filesave.domain.UnknownSaveError
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
@@ -13,15 +15,15 @@ fun ContentResolver.saveFile(
     folder: Uri,
     contentDetails: ContentValues,
     stream: InputStream
-) {
-    insert(folder, contentDetails)?.let { contentUri ->
+): Uri {
+    return insert(folder, contentDetails)?.also { contentUri ->
         openFileDescriptor(contentUri, "w")
             .use { parcelFileDescriptor ->
                 ParcelFileDescriptor.AutoCloseOutputStream(parcelFileDescriptor).write(
                     stream.buffered().readBytes()
                 )
             }
-    }
+    } ?: throw UnknownSaveError
 }
 
 fun InputStream.saveToFile(
@@ -45,5 +47,12 @@ fun InputStream.saveToFile(
             throw e
         }
         return savedFile
+    }
+}
+
+fun Result<Uri>.toFileSaveResult(): FileSaveResult {
+    return when {
+        isSuccess -> FileSaveResult.SaveSuccess(this.getOrThrow())
+        else -> FileSaveResult.SaveError(exceptionOrNull())
     }
 }

@@ -1,10 +1,12 @@
 package com.chicco.sample.ui
 
+import android.annotation.SuppressLint
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.chicco.filesave.domain.FileContent
+import com.chicco.filesave.domain.FileSaveResult
 import com.chicco.filesave.usecase.FileSaveController
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -12,7 +14,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.io.InputStream
 
-
+@SuppressLint("MissingPermission")
 class MainViewModel(application: Application) : AndroidViewModel(application) {
 
     private companion object {
@@ -24,9 +26,11 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     private val saveController: FileSaveController =
         FileSaveController.getInstance(getApplication())
     val downloadPendingJob: LiveData<Boolean> = MutableLiveData(false)
+    val pdfDownloadResult: LiveData<String> = MutableLiveData("")
+    val imageDownloadResult: LiveData<String> = MutableLiveData("")
 
     fun downloadPdf() {
-        startDownloadJob {
+        startDownloadJob(pdfDownloadResult.asMutable()) {
             val inputStream: InputStream =
                 getApplication<Application>().assets.open(SAMPLE_PDF_NAME)
 
@@ -42,14 +46,15 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
-    private fun startDownloadJob(saveFileAction: suspend () -> Unit) {
+    private fun startDownloadJob(
+        resultData: MutableLiveData<String>,
+        saveFileAction: suspend () -> FileSaveResult
+    ) {
         if (downloadPendingJob.value == false) {
             GlobalScope.launch {
                 downloadPendingJob.asMutable().postValue(true)
                 withContext(Dispatchers.IO) {
-                    runCatching {
-                        saveFileAction()
-                    }
+                    resultData.postValue(saveFileAction().toString())
                 }
                 downloadPendingJob.asMutable().postValue(false)
             }
@@ -59,7 +64,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     private fun <T> LiveData<T>.asMutable() = this as MutableLiveData<T>
 
     fun downloadImage() {
-        startDownloadJob {
+        startDownloadJob(imageDownloadResult.asMutable()) {
             val inputStream: InputStream =
                 getApplication<Application>().assets.open(SAMPLE_IMAGE_NAME)
 
