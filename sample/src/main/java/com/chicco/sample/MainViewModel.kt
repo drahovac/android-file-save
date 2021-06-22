@@ -79,7 +79,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
                     fileNameWithoutSuffix = SAMPLE_IMAGE_NAME,
                     suffix = "png",
                     mimeType = "image/png",
-                    subfolderName = "test_bitmap_subfolder"
+                    subfolderName = "test_subfolder"
                 )
             )
         }
@@ -99,7 +99,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
                     fileNameWithoutSuffix = SAMPLE_BITMAP_NAME,
                     suffix = "png",
                     mimeType = "image/png",
-                    subfolderName = "test_subfolder"
+                    subfolderName = "test_bitmap_subfolder"
                 )
             )
         }

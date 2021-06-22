@@ -6,10 +6,7 @@ import android.net.Uri
 import android.os.ParcelFileDescriptor
 import com.chicco.filesave.domain.FileSaveResult
 import com.chicco.filesave.domain.UnknownSaveError
-import java.io.File
-import java.io.FileOutputStream
-import java.io.IOException
-import java.io.InputStream
+import java.io.*
 
 fun ContentResolver.saveFile(
     folder: Uri,
@@ -22,6 +19,19 @@ fun ContentResolver.saveFile(
                 ParcelFileDescriptor.AutoCloseOutputStream(parcelFileDescriptor).write(
                     stream.buffered().readBytes()
                 )
+            }
+    } ?: throw UnknownSaveError
+}
+
+fun ContentResolver.saveFile(
+    folder: Uri,
+    contentDetails: ContentValues,
+    writer: (OutputStream) -> Unit
+): Uri {
+    return insert(folder, contentDetails)?.also { contentUri ->
+        openFileDescriptor(contentUri, "w")
+            .use { parcelFileDescriptor ->
+                writer(ParcelFileDescriptor.AutoCloseOutputStream(parcelFileDescriptor))
             }
     } ?: throw UnknownSaveError
 }

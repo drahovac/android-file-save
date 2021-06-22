@@ -17,12 +17,9 @@ internal class ImageFileSaveProcessor(
 ) : FileSaveProcessor, BitmapSaveProcessor {
 
     private fun getImagesFolderUri(): Uri {
-        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            MediaStore.Images.Media.getContentUri(
-                MediaStore.VOLUME_EXTERNAL_PRIMARY
-            )
-        } else MediaStore.Images.Media.EXTERNAL_CONTENT_URI
-
+        return MediaStore.Images.Media.getContentUri(
+            MediaStore.VOLUME_EXTERNAL_PRIMARY
+        )
     }
 
     override fun saveFile(file: FileContent): Uri {
@@ -36,7 +33,7 @@ internal class ImageFileSaveProcessor(
     }
 
     private fun SaveContent.getContentDetails(): ContentValues {
-       return ContentValues().apply {
+        return ContentValues().apply {
             put(MediaStore.Images.Media.TITLE, fileNameWithoutSuffix)
             put(MediaStore.Images.Media.DISPLAY_NAME, fileNameWithoutSuffix)
             mimeType?.let { put(MediaStore.Images.Media.MIME_TYPE, it) }
@@ -53,6 +50,14 @@ internal class ImageFileSaveProcessor(
     }
 
     override fun saveBitmap(file: BitmapContent): Uri {
-        TODO("Not yet implemented")
+        val downloadsFolder = getImagesFolderUri()
+
+        with(file) {
+            val contentDetails = getContentDetails()
+
+            return contentResolver.saveFile(downloadsFolder, contentDetails) {
+                bitmap.compress(format, quality, it)
+            }
+        }
     }
 }
