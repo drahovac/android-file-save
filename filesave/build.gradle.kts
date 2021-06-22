@@ -4,6 +4,14 @@ plugins {
     kotlin("android.extensions")
 }
 
+extra.apply {
+    set("PUBLISH_GROUP_ID", "io.github.drahovac")
+    set("PUBLISH_VERSION", "0.0.1")
+    set("PUBLISH_ARTIFACT_ID", "file-save")
+}
+
+apply(from = "${rootProject.projectDir}/scripts/publish-module.gradle")
+
 android {
     compileSdkVersion(Versions.compileSdkVersion)
 
@@ -20,7 +28,10 @@ android {
     buildTypes {
         getByName("release") {
             isMinifyEnabled = false
-            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
+            )
         }
     }
     compileOptions {

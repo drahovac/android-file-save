@@ -1,4 +1,11 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
+
+plugins {
+    id("io.github.gradle-nexus.publish-plugin") version "1.1.0"
+}
+
+apply(from = "${rootDir}/scripts/publish-root.gradle")
+
 buildscript {
     repositories {
         google()
