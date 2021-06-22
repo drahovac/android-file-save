@@ -1,4 +1,4 @@
-package com.chicco.sample.ui
+package com.chicco.sample
 
 import android.annotation.SuppressLint
 import android.app.Application
@@ -11,7 +11,6 @@ import com.chicco.filesave.domain.BitmapContent
 import com.chicco.filesave.domain.FileContent
 import com.chicco.filesave.domain.FileSaveResult
 import com.chicco.filesave.usecase.FileSaveController
-import com.chicco.sample.R
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -25,6 +24,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         const val SAMPLE_FILE_NAME = "Sample"
         const val SAMPLE_PDF_NAME = "Sample.pdf"
         const val SAMPLE_IMAGE_NAME = "Sample.png"
+        const val SAMPLE_BITMAP_NAME = "Sample_bitmap.png"
     }
 
     private val saveController: FileSaveController =
@@ -76,10 +76,10 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
             saveController.saveImageFile(
                 FileContent(
                     data = inputStream,
-                    fileNameWithoutSuffix = SAMPLE_FILE_NAME,
+                    fileNameWithoutSuffix = SAMPLE_IMAGE_NAME,
                     suffix = "png",
                     mimeType = "image/png",
-                    subfolderName = "test_subfolder"
+                    subfolderName = "test_bitmap_subfolder"
                 )
             )
         }
@@ -92,7 +92,16 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         )
         startSaveJob(bitmapSaveResult.asMutable())
         {
-            saveController.saveBitmap(BitmapContent(bitmap, Bitmap.CompressFormat.PNG))
+            saveController.saveBitmap(
+                BitmapContent(
+                    bitmap,
+                    Bitmap.CompressFormat.PNG,
+                    fileNameWithoutSuffix = SAMPLE_BITMAP_NAME,
+                    suffix = "png",
+                    mimeType = "image/png",
+                    subfolderName = "test_subfolder"
+                )
+            )
         }
     }
 
