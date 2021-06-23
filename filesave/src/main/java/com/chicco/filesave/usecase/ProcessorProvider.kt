@@ -8,20 +8,20 @@ internal data class ProcessorProvider(private val context: Context) {
 
     val downloadsProcessor: FileSaveProcessor =
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            DownloadsSaveProcessor(context.contentResolver)
+            DownloadsSaveProcessor(context.contentResolver, context)
         } else {
-            DownloadsSaveLegacyProcessor()
+            DownloadsSaveLegacyProcessor(context)
         }
     val imagesFileSaveProcessor: FileSaveProcessor =
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            ImageFileSaveProcessor(context.contentResolver)
+            ImageFileSaveProcessor(context.contentResolver, context)
         } else {
-            ImageFileSaveLegacyProcessor()
+            ImageFileSaveLegacyProcessor(context)
         }
     val bitmapSaveProcessor: BitmapSaveProcessor =
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            ImageFileSaveProcessor(context.contentResolver)
+            ImageFileSaveProcessor(context.contentResolver, context)
         } else {
-            ImageFileSaveLegacyProcessor()
+            ImageFileSaveLegacyProcessor(context)
         }
 }
