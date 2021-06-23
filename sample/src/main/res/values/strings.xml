@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">sample</string>
-    <string name="save_pdf">Save pdf</string>
+    <string name="save_pdf_stream">Save pdf stream</string>
+    <string name="save_pdf_bytes">Save pdf bytes</string>
     <string name="save_image">Save image</string>
     <string name="save_bitmap">Save bitmap</string>
 </resources>

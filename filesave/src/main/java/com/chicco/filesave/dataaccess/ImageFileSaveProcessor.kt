@@ -9,7 +9,8 @@ import android.os.Environment
 import android.provider.MediaStore
 import androidx.annotation.RequiresApi
 import com.chicco.filesave.domain.BitmapContent
-import com.chicco.filesave.domain.FileContent
+import com.chicco.filesave.domain.FileBytesContent
+import com.chicco.filesave.domain.FileStreamContent
 import com.chicco.filesave.domain.SaveContent
 
 @RequiresApi(Build.VERSION_CODES.Q)
@@ -24,13 +25,17 @@ internal class ImageFileSaveProcessor(
         )
     }
 
-    override fun saveFile(file: FileContent): Uri {
-        val downloadsFolder = getImagesFolderUri()
+    override fun saveFile(content: FileStreamContent): Uri {
+        with(content) {
+            return contentResolver.saveFile(getImagesFolderUri(), getContentDetails(), data).also {
+                it.startMediaScan(context)
+            }
+        }
+    }
 
-        with(file) {
-            val contentDetails = getContentDetails()
-
-            return contentResolver.saveFile(downloadsFolder, contentDetails, data).also {
+    override fun saveFile(content: FileBytesContent): Uri {
+        with(content) {
+            return contentResolver.saveFile(getImagesFolderUri(), getContentDetails(), data).also {
                 it.startMediaScan(context)
             }
         }
@@ -53,10 +58,10 @@ internal class ImageFileSaveProcessor(
         }
     }
 
-    override fun saveBitmap(file: BitmapContent): Uri {
+    override fun saveBitmap(content: BitmapContent): Uri {
         val downloadsFolder = getImagesFolderUri()
 
-        with(file) {
+        with(content) {
             val contentDetails = getContentDetails()
 
             return contentResolver.saveFile(downloadsFolder, contentDetails) {

@@ -8,8 +8,9 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.chicco.filesave.domain.BitmapContent
-import com.chicco.filesave.domain.FileContent
+import com.chicco.filesave.domain.FileBytesContent
 import com.chicco.filesave.domain.FileSaveResult
+import com.chicco.filesave.domain.FileStreamContent
 import com.chicco.filesave.usecase.FileSaveController
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -34,20 +35,33 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     val imageSaveResult: LiveData<String> = MutableLiveData("")
     val bitmapSaveResult: LiveData<String> = MutableLiveData("")
 
-    fun savePdf() {
+    fun savePdf(saveAsBytes: Boolean) {
         startSaveJob(pdfSaveResult.asMutable()) {
             val inputStream: InputStream =
                 application().assets.open(SAMPLE_PDF_NAME)
 
-            saveController.saveDocumentFile(
-                FileContent(
-                    data = inputStream,
-                    fileNameWithoutSuffix = SAMPLE_FILE_NAME,
-                    suffix = "pdf",
-                    mimeType = "application/pdf",
-                    subfolderName = "test_subfolder"
+            if (saveAsBytes) {
+                saveController.saveDocumentFile(
+                    FileStreamContent(
+                        data = inputStream,
+                        fileNameWithoutSuffix = SAMPLE_FILE_NAME,
+                        suffix = "pdf",
+                        mimeType = "application/pdf",
+                        subfolderName = "test_subfolder"
+                    )
                 )
-            )
+            } else {
+                saveController.saveDocumentFile(
+                    FileBytesContent(
+                        data = inputStream.readBytes(),
+                        fileNameWithoutSuffix = SAMPLE_FILE_NAME,
+                        suffix = "pdf",
+                        mimeType = "application/pdf",
+                        subfolderName = "test_subfolder"
+                    )
+                )
+            }
+
         }
     }
 
@@ -74,7 +88,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
                 application().assets.open(SAMPLE_IMAGE_NAME)
 
             saveController.saveImageFile(
-                FileContent(
+                FileStreamContent(
                     data = inputStream,
                     fileNameWithoutSuffix = SAMPLE_IMAGE_NAME,
                     suffix = "png",
