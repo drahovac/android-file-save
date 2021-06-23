@@ -12,7 +12,7 @@ import com.chicco.filesave.domain.FileContent
 @RequiresApi(Build.VERSION_CODES.Q)
 internal class DownloadsSaveProcessor(
     private val contentResolver: ContentResolver
-) : FileSaveProcessor() {
+) : FileSaveProcessor {
 
     override fun saveFile(file: FileContent): Uri {
         val downloadsFolder = getDownloadFolderUri()

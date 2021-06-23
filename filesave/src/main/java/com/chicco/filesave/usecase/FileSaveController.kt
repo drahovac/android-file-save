@@ -5,6 +5,7 @@ import android.content.Context
 import androidx.annotation.RequiresPermission
 import com.chicco.filesave.dataaccess.CheckWritePermissionProcessor
 import com.chicco.filesave.dataaccess.FileSaveProcessor
+import com.chicco.filesave.domain.BitmapContent
 import com.chicco.filesave.domain.FileContent
 import com.chicco.filesave.domain.FileSaveResult
 
@@ -31,12 +32,25 @@ class FileSaveController internal constructor(
         return saveFileIfPermissionGranted(content, processors.imagesFileSaveProcessor)
     }
 
+    @RequiresPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+    suspend fun saveBitmap(content: BitmapContent): FileSaveResult {
+        return saveIfPermissionGranted { processors.bitmapSaveProcessor.save(content) }
+    }
+
     private suspend fun saveFileIfPermissionGranted(
         content: FileContent,
         processor: FileSaveProcessor
     ): FileSaveResult {
-        return if (checkPermissionProcessor.hasWritePermission()) {
+        return saveIfPermissionGranted {
             processor.save(content)
+        }
+    }
+
+    private suspend fun saveIfPermissionGranted(
+        saveAction: suspend () -> FileSaveResult
+    ): FileSaveResult {
+        return if (checkPermissionProcessor.hasWritePermission()) {
+            saveAction()
         } else FileSaveResult.MissingWritePermission
     }
 }
