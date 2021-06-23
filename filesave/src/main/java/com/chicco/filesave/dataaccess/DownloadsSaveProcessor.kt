@@ -2,6 +2,7 @@ package com.chicco.filesave.dataaccess
 
 import android.content.ContentResolver
 import android.content.ContentValues
+import android.content.Context
 import android.net.Uri
 import android.os.Build
 import android.os.Environment
@@ -11,7 +12,8 @@ import com.chicco.filesave.domain.FileContent
 
 @RequiresApi(Build.VERSION_CODES.Q)
 internal class DownloadsSaveProcessor(
-    private val contentResolver: ContentResolver
+    private val contentResolver: ContentResolver,
+    private val context: Context
 ) : FileSaveProcessor {
 
     override fun saveFile(file: FileContent): Uri {
@@ -29,7 +31,9 @@ internal class DownloadsSaveProcessor(
                 }
             }
 
-            return contentResolver.saveFile(downloadsFolder, contentDetails, data)
+            return contentResolver.saveFile(downloadsFolder, contentDetails, data).also {
+                it.startMediaScan(context)
+            }
         }
     }
 

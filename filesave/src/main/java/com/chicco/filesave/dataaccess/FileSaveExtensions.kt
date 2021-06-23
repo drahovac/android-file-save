@@ -2,6 +2,8 @@ package com.chicco.filesave.dataaccess
 
 import android.content.ContentResolver
 import android.content.ContentValues
+import android.content.Context
+import android.content.Intent
 import android.net.Uri
 import android.os.ParcelFileDescriptor
 import com.chicco.filesave.domain.FileSaveResult
@@ -70,4 +72,10 @@ fun Result<Uri>.toFileSaveResult(): FileSaveResult {
         isSuccess -> FileSaveResult.SaveSuccess(this.getOrThrow())
         else -> FileSaveResult.SaveError(exceptionOrNull())
     }
+}
+
+fun Uri.startMediaScan(context: Context) {
+    val mediaScanIntent = Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+    mediaScanIntent.data = this
+    context.sendBroadcast(mediaScanIntent)
 }

@@ -2,6 +2,7 @@ package com.chicco.filesave.dataaccess
 
 import android.content.ContentResolver
 import android.content.ContentValues
+import android.content.Context
 import android.net.Uri
 import android.os.Build
 import android.os.Environment
@@ -13,7 +14,8 @@ import com.chicco.filesave.domain.SaveContent
 
 @RequiresApi(Build.VERSION_CODES.Q)
 internal class ImageFileSaveProcessor(
-    private val contentResolver: ContentResolver
+    private val contentResolver: ContentResolver,
+    private val context: Context
 ) : FileSaveProcessor, BitmapSaveProcessor {
 
     private fun getImagesFolderUri(): Uri {
@@ -28,7 +30,9 @@ internal class ImageFileSaveProcessor(
         with(file) {
             val contentDetails = getContentDetails()
 
-            return contentResolver.saveFile(downloadsFolder, contentDetails, data)
+            return contentResolver.saveFile(downloadsFolder, contentDetails, data).also {
+                it.startMediaScan(context)
+            }
         }
     }
 
@@ -57,6 +61,8 @@ internal class ImageFileSaveProcessor(
 
             return contentResolver.saveFile(downloadsFolder, contentDetails) {
                 bitmap.compress(format, quality, it)
+            }.also {
+                it.startMediaScan(context)
             }
         }
     }
