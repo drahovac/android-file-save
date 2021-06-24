@@ -6,7 +6,7 @@ plugins {
 
 extra.apply {
     set("PUBLISH_GROUP_ID", "io.github.drahovac")
-    set("PUBLISH_VERSION", "0.0.2")
+    set("PUBLISH_VERSION", "0.0.3")
     set("PUBLISH_ARTIFACT_ID", "file-save")
 }
 
