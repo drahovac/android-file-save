@@ -4,9 +4,7 @@ import android.net.Uri
 import com.chicco.filesave.dataaccess.BitmapSaveProcessor
 import com.chicco.filesave.dataaccess.CheckWritePermissionProcessor
 import com.chicco.filesave.dataaccess.FileSaveProcessor
-import com.chicco.filesave.domain.BitmapContentTestBuilder
-import com.chicco.filesave.domain.FileContentTestBuilder
-import com.chicco.filesave.domain.FileSaveResult
+import com.chicco.filesave.domain.*
 import com.nhaarman.mockito_kotlin.*
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert.assertEquals
@@ -41,19 +39,31 @@ class FileSaveControllerTest {
     @Test
     fun `should request save document file to downloads folder`() {
         runBlocking {
-            val anyFileContent = FileContentTestBuilder().build()
+            val anyFileContent = FileStreamContentTestBuilder().build()
 
             fileSaveController.saveDocumentFile(anyFileContent)
 
             verify(anyFileDownloadProcessor).save(anyFileContent)
-            verify(anyFileImagesProcessor, never()).save(any())
+            verify(anyFileImagesProcessor, never()).save(any<FileStreamContent>())
+        }
+    }
+
+    @Test
+    fun `should request save document file bytes to downloads folder`() {
+        runBlocking {
+            val anyFileContent = FileBytesContentTestBuilder().build()
+
+            fileSaveController.saveDocumentFile(anyFileContent)
+
+            verify(anyFileDownloadProcessor).save(anyFileContent)
+            verify(anyFileImagesProcessor, never()).save(any<FileBytesContent>())
         }
     }
 
     @Test
     fun `should return save result on save document file to downloads folder`() {
         runBlocking {
-            val anyFileContent = FileContentTestBuilder().build()
+            val anyFileContent = FileStreamContentTestBuilder().build()
             whenever(anyFileDownloadProcessor.save(anyFileContent))
                 .thenReturn(FileSaveResult.SaveSuccess(anyUri))
 
@@ -66,12 +76,25 @@ class FileSaveControllerTest {
     @Test
     fun `should request save image file to images folder`() {
         runBlocking {
-            val anyFileContent = FileContentTestBuilder().build()
+            val anyFileContent = FileStreamContentTestBuilder().build()
 
             fileSaveController.saveImageFile(anyFileContent)
 
             verify(anyFileImagesProcessor).save(anyFileContent)
-            verify(anyFileDownloadProcessor, never()).save(any())
+            verify(anyFileDownloadProcessor, never()).save(any<FileStreamContent>())
+        }
+    }
+
+
+    @Test
+    fun `should request save image bytes to images folder`() {
+        runBlocking {
+            val anyFileContent = FileBytesContentTestBuilder().build()
+
+            fileSaveController.saveImageFile(anyFileContent)
+
+            verify(anyFileImagesProcessor).save(anyFileContent)
+            verify(anyFileDownloadProcessor, never()).save(any<FileBytesContent>())
         }
     }
 
@@ -79,7 +102,7 @@ class FileSaveControllerTest {
     fun `should return missing permission result`() {
         whenever(anyCheckWritePermissionProcessor.hasWritePermission()).thenReturn(false)
         runBlocking {
-            val anyFileContent = FileContentTestBuilder().build()
+            val anyFileContent = FileStreamContentTestBuilder().build()
 
             val result = fileSaveController.saveImageFile(anyFileContent)
 
@@ -95,8 +118,8 @@ class FileSaveControllerTest {
             fileSaveController.saveBitmap(anyBitmapContent)
 
             verify(anyBitmapProcessor).save(anyBitmapContent)
-            verify(anyFileDownloadProcessor, never()).save(any())
-            verify(anyFileImagesProcessor, never()).save(any())
+            verify(anyFileDownloadProcessor, never()).save(any<FileStreamContent>())
+            verify(anyFileImagesProcessor, never()).save(any<FileStreamContent>())
         }
     }
 }

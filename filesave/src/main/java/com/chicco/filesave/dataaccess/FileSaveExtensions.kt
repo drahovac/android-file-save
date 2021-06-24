@@ -23,6 +23,16 @@ fun ContentResolver.saveFile(
 fun ContentResolver.saveFile(
     folder: Uri,
     contentDetails: ContentValues,
+    bytes: ByteArray
+): Uri {
+    return saveFile(folder, contentDetails) {
+        it.write(bytes)
+    }
+}
+
+fun ContentResolver.saveFile(
+    folder: Uri,
+    contentDetails: ContentValues,
     writer: (OutputStream) -> Unit
 ): Uri {
     return insert(folder, contentDetails)?.also { contentUri ->
@@ -43,6 +53,16 @@ fun InputStream.saveToFile(
             outputStream.write(readBytes)
             outputStream.flush()
         }
+    }
+}
+
+fun ByteArray.saveToFile(
+    fileName: String,
+    attachmentPath: File
+): File {
+    return saveToFile(fileName, attachmentPath) { outputStream ->
+        outputStream.write(this)
+        outputStream.flush()
     }
 }
 

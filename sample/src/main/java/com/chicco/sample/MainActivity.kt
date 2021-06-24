@@ -16,12 +16,13 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        savePdf.setOnClickListener { model.savePdf() }
+        savePdfStream.setOnClickListener { model.savePdf(saveAsBytes = false) }
+        savePdfBytes.setOnClickListener { model.savePdf(saveAsBytes = true) }
         saveImage.setOnClickListener { model.saveImage() }
         saveBitmap.setOnClickListener { model.saveBitmap() }
 
         model.downloadPendingJob.observe(this) { jobPending ->
-            savePdf.isEnabled = !jobPending
+            savePdfStream.isEnabled = !jobPending
             if (jobPending) progressBar.show() else progressBar.hide()
         }
         model.pdfSaveResult.observe(this) {

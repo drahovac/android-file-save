@@ -2,7 +2,7 @@ package com.chicco.filesave.domain
 
 import java.io.InputStream
 
-data class FileContent(
+data class FileStreamContent(
     val data: InputStream,
     override val fileNameWithoutSuffix: String,
     override val suffix: String,

@@ -17,5 +17,5 @@ interface BitmapSaveProcessor {
         }
     }
 
-    fun saveBitmap(file: BitmapContent): Uri
+    fun saveBitmap(content: BitmapContent): Uri
 }
