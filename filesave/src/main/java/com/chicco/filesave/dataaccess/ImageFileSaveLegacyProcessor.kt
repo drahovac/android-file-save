@@ -4,13 +4,13 @@ import android.content.Context
 import android.net.Uri
 import android.os.Environment
 import android.os.Environment.DIRECTORY_PICTURES
-import androidx.core.net.toUri
 import com.chicco.filesave.domain.BitmapContent
 import com.chicco.filesave.domain.FileContent
 import java.io.File
 
 internal class ImageFileSaveLegacyProcessor(
-    private val context: Context
+    private val context: Context,
+    private val fileProviderName: String?
 ) : FileSaveProcessor, BitmapSaveProcessor {
 
     override fun saveFile(file: FileContent): Uri {
@@ -18,9 +18,10 @@ internal class ImageFileSaveLegacyProcessor(
             Environment.getExternalStoragePublicDirectory(DIRECTORY_PICTURES)
                 .toString() + file.subfolderName?.let { "/$it" }.orEmpty()
         )
-        return file.data.saveToFile(file.fileNameWithSuffix, directory).toUri().also {
-            it.startMediaScan(context)
-        }
+        return file.data.saveToFile(file.fileNameWithSuffix, directory)
+            .getUriWithFileProviderIfPresent(fileProviderName, context).also {
+                it.startMediaScan(context)
+            }
     }
 
     override fun saveBitmap(content: BitmapContent): Uri {
@@ -29,9 +30,11 @@ internal class ImageFileSaveLegacyProcessor(
                 .toString() + content.subfolderName?.let { "/$it" }.orEmpty()
         )
         with(content) {
-            return saveToFile(fileNameWithSuffix, directory) {
+            val file = saveToFile(fileNameWithSuffix, directory) {
                 bitmap.compress(format, quality, it)
-            }.toUri().also {
+            }
+
+            return file.getUriWithFileProviderIfPresent(fileProviderName, context).also {
                 it.startMediaScan(context)
             }
         }

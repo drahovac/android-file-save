@@ -6,6 +6,8 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.ParcelFileDescriptor
+import androidx.core.content.FileProvider
+import androidx.core.net.toUri
 import com.chicco.filesave.domain.FileSaveResult
 import com.chicco.filesave.domain.UnknownSaveError
 import java.io.*
@@ -78,4 +80,10 @@ fun Uri.startMediaScan(context: Context) {
     val mediaScanIntent = Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
     mediaScanIntent.data = this
     context.sendBroadcast(mediaScanIntent)
+}
+
+fun File.getUriWithFileProviderIfPresent(fileProviderName: String?, context: Context): Uri {
+    return fileProviderName?.let {
+        FileProvider.getUriForFile(context, fileProviderName, this)
+    } ?: toUri()
 }
