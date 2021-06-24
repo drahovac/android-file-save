@@ -15,7 +15,6 @@ internal class ImageFileSaveLegacyProcessor(
     private val fileProviderName: String?
 ) : FileSaveProcessor, BitmapSaveProcessor {
 
-
     override fun saveFile(content: FileStreamContent): Uri {
         return content.data.saveToFile(content.fileNameWithSuffix, getDirectory(content))
             .getUriWithFileProviderIfPresent(fileProviderName, context)
