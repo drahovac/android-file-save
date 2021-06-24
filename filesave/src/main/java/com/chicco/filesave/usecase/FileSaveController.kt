@@ -10,12 +10,17 @@ import com.chicco.filesave.domain.FileStreamContent
 
 class FileSaveController internal constructor(
     private val processors: ProcessorProvider,
-    private val checkPermissionProcessor: CheckWritePermissionProcessor
+    private val checkPermissionProcessor: CheckWritePermissionProcessor,
 ) {
     companion object {
-        fun getInstance(context: Context): FileSaveController {
+
+        /*
+         * @param fileProviderName name of file provider for apis with sdk < Q
+         * if sharing file intent needed
+         */
+        fun getInstance(context: Context, fileProviderName: String? = null): FileSaveController {
             return FileSaveController(
-                ProcessorProvider(context),
+                ProcessorProvider(context, fileProviderName),
                 CheckWritePermissionProcessor(context)
             )
         }
