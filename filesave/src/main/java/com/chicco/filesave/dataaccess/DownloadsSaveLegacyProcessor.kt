@@ -4,7 +4,9 @@ import android.content.Context
 import android.net.Uri
 import android.os.Environment
 import android.os.Environment.getExternalStoragePublicDirectory
-import com.chicco.filesave.domain.FileContent
+import com.chicco.filesave.domain.FileBytesContent
+import com.chicco.filesave.domain.FileStreamContent
+import com.chicco.filesave.domain.SaveContent
 import java.io.File
 
 internal class DownloadsSaveLegacyProcessor(
@@ -12,22 +14,22 @@ internal class DownloadsSaveLegacyProcessor(
     private val fileProviderName: String?
 ) : FileSaveProcessor {
 
-    override fun saveFile(content: FileContent): Uri {
-        val directory =
-            getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() +
-                    content.subfolderName?.let { "/$it" }.orEmpty()
-        val uri = getUriFromFile(content, directory)
-
-        uri.startMediaScan(context)
-
-        return uri
+    override fun saveFile(content: FileStreamContent): Uri {
+        return content.data.saveToFile(content.fileNameWithSuffix, File(getDirectory(content)))
+            .getUriWithFileProviderIfPresent(fileProviderName, context).also {
+                it.startMediaScan(context)
+            }
     }
 
-    private fun getUriFromFile(
-        content: FileContent,
-        directory: String
-    ): Uri {
-        val file = content.data.saveToFile(content.fileNameWithSuffix, File(directory))
-        return file.getUriWithFileProviderIfPresent(fileProviderName, context)
+    override fun saveFile(content: FileBytesContent): Uri {
+        return content.data.saveToFile(content.fileNameWithSuffix, File(getDirectory(content)))
+            .getUriWithFileProviderIfPresent(fileProviderName, context).also {
+                it.startMediaScan(context)
+            }
+    }
+
+    private fun getDirectory(content: SaveContent): String {
+        return getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString() +
+                content.subfolderName?.let { "/$it" }.orEmpty()
     }
 }

@@ -12,7 +12,7 @@ class FileContentTest {
     private companion object {
         const val ANY_NAME = "ANY_NAME"
         const val ANY_SUFFIX = "ANY_SUFFIX"
-        val ANY_FILE_CONTENT = FileContentTestBuilder(
+        val ANY_FILE_CONTENT = FileStreamContentTestBuilder(
             fileNameWithoutSuffix  = ANY_NAME,
             suffix = ANY_SUFFIX
         ).build()

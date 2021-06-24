@@ -1,13 +1,12 @@
 package com.chicco.filesave.usecase
 
-import android.Manifest
 import android.content.Context
-import androidx.annotation.RequiresPermission
 import com.chicco.filesave.dataaccess.CheckWritePermissionProcessor
 import com.chicco.filesave.dataaccess.FileSaveProcessor
 import com.chicco.filesave.domain.BitmapContent
-import com.chicco.filesave.domain.FileContent
+import com.chicco.filesave.domain.FileBytesContent
 import com.chicco.filesave.domain.FileSaveResult
+import com.chicco.filesave.domain.FileStreamContent
 
 class FileSaveController internal constructor(
     private val processors: ProcessorProvider,
@@ -27,23 +26,37 @@ class FileSaveController internal constructor(
         }
     }
 
-    @RequiresPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
-    suspend fun saveDocumentFile(content: FileContent): FileSaveResult {
-        return saveFileIfPermissionGranted(content, processors.downloadsProcessor)
+    suspend fun saveDocumentFile(content: FileStreamContent): FileSaveResult {
+        return saveFileStreamIfPermissionGranted(content, processors.downloadsProcessor)
     }
 
-    @RequiresPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
-    suspend fun saveImageFile(content: FileContent): FileSaveResult {
-        return saveFileIfPermissionGranted(content, processors.imagesFileSaveProcessor)
+    suspend fun saveDocumentFile(content: FileBytesContent): FileSaveResult {
+        return saveFileBytesIfPermissionGranted(content, processors.downloadsProcessor)
     }
 
-    @RequiresPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+    suspend fun saveImageFile(content: FileStreamContent): FileSaveResult {
+        return saveFileStreamIfPermissionGranted(content, processors.imagesFileSaveProcessor)
+    }
+
+    suspend fun saveImageFile(content: FileBytesContent): FileSaveResult {
+        return saveFileBytesIfPermissionGranted(content, processors.imagesFileSaveProcessor)
+    }
+
     suspend fun saveBitmap(content: BitmapContent): FileSaveResult {
         return saveIfPermissionGranted { processors.bitmapSaveProcessor.save(content) }
     }
 
-    private suspend fun saveFileIfPermissionGranted(
-        content: FileContent,
+    private suspend fun saveFileStreamIfPermissionGranted(
+        content: FileStreamContent,
+        processor: FileSaveProcessor
+    ): FileSaveResult {
+        return saveIfPermissionGranted {
+            processor.save(content)
+        }
+    }
+
+    private suspend fun saveFileBytesIfPermissionGranted(
+        content: FileBytesContent,
         processor: FileSaveProcessor
     ): FileSaveResult {
         return saveIfPermissionGranted {
